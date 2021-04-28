@@ -1,0 +1,39 @@
+{
+  "name": "wedo/utilities",
+  "description": "Utility classes",
+  "require": {
+    "nette/utils": "^3.0",
+    "nette/caching": "^3.0",
+    "contributte/aop":"^2.0",
+    "nette/security": "^3.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.0",
+    "phpstan/phpstan": "^0.12",
+    "dg/bypass-finals": "^1.2",
+    "ninjify/qa": "^0.12",
+    "phpstan/phpstan-deprecation-rules": "^0.12",
+    "phpstan/phpstan-dibi": "^0.12",
+    "phpstan/phpstan-nette": "^0.12",
+    "phpstan/phpstan-strict-rules": "^0.12",
+    "psr/log": "^1.1",
+    "mikey179/vfsstream": "^1.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "Wedo\\Utilities\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Wedo\\Utilities\\Tests\\": "tests"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  },
+  "prefer-stable": true,
+  "minimum-stability": "dev"
+}
