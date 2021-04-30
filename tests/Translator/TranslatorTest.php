@@ -11,11 +11,9 @@ use Wedo\Utilities\Translator\Translator;
 class TranslatorTest extends TestCase
 {
 
-	/** @var MockObject|ITranslatorRepository */
-	private $repository;
+	private MockObject|ITranslatorRepository $repository;
 
-	/** @var MockObject|LoggerInterface */
-	private $logger;
+	private MockObject|LoggerInterface $logger;
 
 	/** @var string[] */
 	private array $translations = [
@@ -26,12 +24,6 @@ class TranslatorTest extends TestCase
 		'whitespace-translation' => '',
 
 	];
-
-	protected function setUp(): void
-	{
-		$this->repository = $this->createMock(ITranslatorRepository::class);
-		$this->logger = $this->createMock(LoggerInterface::class);
-	}
 
 	public function testTranslate(): void
 	{
@@ -76,6 +68,12 @@ class TranslatorTest extends TestCase
 		$translator = new Translator($this->repository, $this->logger);
 		$translator->setLanguage('cms');
 		$translator->translate('anything');
+	}
+
+	protected function setUp(): void
+	{
+		$this->repository = $this->createMock(ITranslatorRepository::class);
+		$this->logger = $this->createMock(LoggerInterface::class);
 	}
 
 }

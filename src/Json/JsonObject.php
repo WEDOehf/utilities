@@ -9,16 +9,6 @@ class JsonObject
 {
 
 	/**
-	 * @return array<string, string>
-	 * @codeCoverageIgnore
-	 */
-	protected static function getReplacementColumnsMapping(): array
-	{
-		return [];
-	}
-
-
-	/**
 	 * @return static
 	 */
 	public static function fromJson(?string $json = null, bool $firstLoweCase = false): ?self
@@ -35,7 +25,6 @@ class JsonObject
 
 		return self::fromArray($arr, $firstLoweCase);
 	}
-
 
 	/**
 	 * Gets object from array, fills up only defined properties in class
@@ -60,7 +49,6 @@ class JsonObject
 		return $data;
 	}
 
-
 	/**
 	 * @param array<string, string> $replacements
 	 * @return static
@@ -70,8 +58,8 @@ class JsonObject
 		$arr = method_exists($row, 'toArray') ? $row->toArray() : (array) $row;
 		$class_name = static::class;
 		$data = new $class_name();
-		$fields = array_keys(get_class_vars($class_name));
-		$replacements = $replacements ?? static::getReplacementColumnsMapping();
+		$fields = array_keys(get_class_vars($class_name), null, true);
+		$replacements ??= static::getReplacementColumnsMapping();
 
 		foreach ($fields as $field) {
 			if (in_array($field, static::skipColumns(), true)) {
@@ -98,6 +86,13 @@ class JsonObject
 		return $data;
 	}
 
+	/**
+	 * returns object serialized to JSON
+	 */
+	public function toJson(): string
+	{
+		return Json::encode($this);
+	}
 
 	/**
 	 * @param object[] $rows
@@ -126,25 +121,26 @@ class JsonObject
 		return $result;
 	}
 
-	protected static function rowCallback(object $entity, object $row): void
-	{
-	}
-
 	/**
-	 * @return string[]
+	 * @return array<string, string>
 	 * @codeCoverageIgnore
 	 */
-	protected static function skipColumns(): array
+	protected static function getReplacementColumnsMapping(): array
 	{
 		return [];
 	}
 
-	/**
-	 * returns object serialized to JSON
-	 */
-	public function toJson(): string
+	protected static function rowCallback(object $entity, object $row): void
 	{
-		return Json::encode($this);
+		//nothing to handle
+	}
+
+	/**
+	 * @return string[]
+	 */
+	protected static function skipColumns(): array
+	{
+		return [];
 	}
 
 }

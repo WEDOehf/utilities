@@ -8,12 +8,12 @@ use Nette\Localization\ITranslator;
 class JsonTranslatableMessage implements JsonSerializable
 {
 
-	private ITranslator $translator;
-
 	public string $key;
 
 	/** @var mixed[] */
 	public array $params = [];
+
+	private ITranslator $translator;
 
 	/**
 	 * @param mixed[] $params

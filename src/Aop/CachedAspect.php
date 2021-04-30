@@ -2,14 +2,13 @@
 
 namespace Wedo\Utilities\Aop;
 
-use Contributte\Aop\Annotations\Around;
+use Contributte\Aop\Attributes\Around;
 use Contributte\Aop\JoinPoint\AroundMethod;
 use Nette\Caching\Cache;
 use Nette\Caching\Storages\FileStorage;
 use Nette\SmartObject;
-use Nette\Utils\ArrayHash;
-use Wedo\Utilities\Aop\Annotations\Cached;
-use Wedo\Utilities\Aop\Annotations\FileCached;
+use Wedo\Utilities\Aop\Attributes\Cached;
+use Wedo\Utilities\Aop\Attributes\FileCached;
 use Wedo\Utilities\CacheHelper;
 
 class CachedAspect
@@ -31,35 +30,29 @@ class CachedAspect
 	}
 
 
-	/**
-	 * @Around("class(Wedo\Utilities\Aop\Markers\ICached) && methodAnnotatedWith(Wedo\Utilities\Aop\Annotations\Cached)")
-	 * @return mixed
-	 */
-	public function cache(AroundMethod $method)
+	#[Around('class(Wedo\Utilities\Aop\Markers\ICached) && methodAttributedWith(Wedo\Utilities\Aop\Annotations\Cached)')]
+
+	public function cache(AroundMethod $method): mixed
 	{
 		$cache_key = $this->getKey($method);
 
 		$result = $this->cache->load($cache_key);
 
 		if ($result === null) {
-			$target = $method->getTargetReflection();
 			$result = $method->proceed();
 
-			/** @var Cached $annotation */
-			$annotation = $target->getAnnotation('Cached');
-			$seconds = $annotation->seconds ?? 60 * 15;
+			/** @var Cached $attribute */
+			$attribute = $method->getTargetReflection()->getAttributes(Cached::class)[0]->newInstance();
+			$seconds = $attribute->seconds ?? 60 * 15;
 			$this->cache->save($cache_key, $result, [Cache::EXPIRATION => time() + $seconds]);
 		}
 
 		return $result;
 	}
 
+	#[Around('class(Wedo\Utilities\Aop\Markers\ICached) && methodAttributedWith(Wedo\Utilities\Aop\Annotations\MemoryCached)')]
 
-	/**
-	 * @Around("class(Wedo\Utilities\Aop\Markers\ICached) && methodAnnotatedWith(Wedo\Utilities\Aop\Annotations\MemoryCached)")
-	 * @return mixed
-	 */
-	public function memoryCache(AroundMethod $method)
+	public function memoryCache(AroundMethod $method): mixed
 	{
 		$cache_key = $this->getKey($method);
 
@@ -72,23 +65,22 @@ class CachedAspect
 		return $this->mCache[$cache_key];
 	}
 
-	/**
-	 * @Around("class(Wedo\Utilities\Aop\Markers\ICached) && methodAnnotatedWith(Wedo\Utilities\Aop\Annotations\FileCached)")
-	 * @return mixed
-	 */
-	public function fileCache(AroundMethod $method)
+	#[Around('class(App\Utilities\Aop\Markers\ICached) && methodAttributedWith(App\Utilities\Aop\Attributes\FileCached)')]
+
+	public function fileCache(AroundMethod $method): mixed
 	{
 		$cache_key = $this->getKey($method);
 		$result = $this->fileStorage->load($cache_key);
 
 		if ($result === null) {
-			$target = $method->getTargetReflection();
 			$result = $method->proceed();
 
-			/** @var FileCached|ArrayHash $annotation */
-			$annotation = $target->getAnnotation('FileCached');
+			$attributes = $method->getTargetReflection()->getAttributes('FileCached');
 
-			$seconds = $annotation->seconds ?? 60 * 15;
+			/** @var FileCached|null $attribute */
+			$attribute = isset($attributes[0]) ? $attributes[0]->newInstance() : null;
+
+			$seconds = $attribute->seconds ?? 60 * 15;
 
 			$this->fileStorage->save($cache_key, $result, [Cache::EXPIRATION => time() + $seconds]);
 		}
@@ -98,11 +90,11 @@ class CachedAspect
 
 	protected function getKey(AroundMethod $method): string
 	{
-		/** @var Cached|ArrayHash $annotation */
-		$annotation = $method->getTargetReflection()->getAnnotation('Cached');
+		/** @var Cached $attribute */
+		$attribute = $method->getTargetReflection()->getAttributes(Cached::class)[0]->newInstance();
 
-		if (isset($annotation->key) && $annotation->key !== null) {
-			$key = $annotation->key;
+		if ($attribute->key !== null) {
+			$key = $attribute->key;
 
 			return $key . CacheHelper::generateKeyFromParams($method->getArguments());
 		}

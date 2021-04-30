@@ -18,16 +18,7 @@ class LoginRequiredAspectTest extends TestCase
 
 	private TestLoginRequired $testObj;
 
-	/** @var User|MockObject */
-	private $user;
-
-	protected function setUp(): void
-	{
-		$this->user = $this->createMock(User::class);
-
-		$this->testObj = new TestLoginRequired();
-		$this->aspect = new LoginRequiredAspect($this->user);
-	}
+	private User|MockObject $user;
 
 	public function testLoginRequired_OnRegularMethodWithNoUserLoggedIn_ShouldThrowLoginRequiredException(): void
 	{
@@ -63,6 +54,14 @@ class LoginRequiredAspectTest extends TestCase
 	{
 		$this->user->expects($this->once())->method('isLoggedIn')->willReturn(true);
 		$this->aspect->tryAfterLogin(new BeforeMethod($this->testObj, 'test'));
+	}
+
+	protected function setUp(): void
+	{
+		$this->user = $this->createMock(User::class);
+
+		$this->testObj = new TestLoginRequired();
+		$this->aspect = new LoginRequiredAspect($this->user);
 	}
 
 }

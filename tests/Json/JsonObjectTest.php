@@ -51,7 +51,7 @@ class JsonObjectTest extends TestCase
 			ArrayHash::from(['id' => 2, 'name' => 'test2', 'created' => null]),
 		];
 		$now = new JsonDateTime();
-		$result = TestJson::createArrayFromRows($rows, null, fn(TestJson $entity, $row) => $entity->created_date = $now);
+		$result = TestJson::createArrayFromRows($rows, null, fn (TestJson $entity, $row) => $entity->created_date = $now);
 		$this->assertCount(2, $result);
 		$this->assertEquals($result[0]->id, 1);
 		$this->assertEquals($result[0]->created_date, $now);

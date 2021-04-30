@@ -19,20 +19,19 @@ class TestJson extends JsonObject
 	public ?string $none;
 
 	/**
-	 * @return array<string, string>
-	 */
-	protected static function getReplacementColumnsMapping(): array
-	{
-		return ['created_date' => 'created'];
-	}
-
-
-	/**
 	 * @return string[]
 	 */
 	public static function skipColumns(): array
 	{
 		return ['ignored'];
+	}
+
+	/**
+	 * @return array<string, string>
+	 */
+	protected static function getReplacementColumnsMapping(): array
+	{
+		return ['created_date' => 'created'];
 	}
 
 }
