@@ -11,14 +11,10 @@ class JsonTranslatableMessageTest extends TestCase
 
 	public function testJsonTranslatableMessage(): void
 	{
-		$message = new JsonTranslatableMessage('%s you %d', ['hey', 2 ]);
+		$message = new JsonTranslatableMessage('%s you %d', ['hey', 2]);
 		$message->setTranslator(new class implements ITranslator {
 
-			/**
-			 * @param string|mixed $message
-			 * @param mixed $parameters
-			 */
-			public function translate($message, ...$parameters): string
+			public function translate(mixed $message, mixed ...$parameters): string
 			{
 				return vsprintf($message, $parameters);
 			}

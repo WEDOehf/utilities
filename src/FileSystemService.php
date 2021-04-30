@@ -20,18 +20,15 @@ class FileSystemService
 		return is_dir($path);
 	}
 
-
 	public function isWritable(string $path): bool
 	{
 		return is_writable($path);
 	}
 
-
 	public function isReadable(string $path): bool
 	{
 		return is_readable($path);
 	}
-
 
 	/**
 	 * Performs `unlink` on the given path.
@@ -41,24 +38,15 @@ class FileSystemService
 		return unlink($path);
 	}
 
-
-	/**
-	 * @param mixed|string $content
-	 */
-	public function write(string $path, $content): bool
+	public function write(string $path, mixed $content): bool
 	{
 		return (bool) file_put_contents($path, $content);
 	}
 
-
-	/**
-	 * @return bool|string
-	 */
-	public function read(string $path)
+	public function read(string $path): bool|string
 	{
 		return file_get_contents($path);
 	}
-
 
 	/**
 	 * @return string[]
@@ -71,25 +59,35 @@ class FileSystemService
 		return $result === false ? null : $result;
 	}
 
-
 	public function makeDirectory(string $path, int $mode = 0777, bool $recursive = true): bool
 	{
 		return mkdir($path, $mode, $recursive);
 	}
-
 
 	public function removeDirectory(string $path): bool
 	{
 		return rmdir($path);
 	}
 
+	public function rename(string $oldName, string $newName): bool
+	{
+		return rename($oldName, $newName);
+	}
 
-	/**
-	 * @codeCoverageIgnore
-	 */
 	public function getFilesize(string $path): ?int
 	{
 		$result = filesize($path);
+
+		return $result === false ? null : $result;
+	}
+
+	/**
+	 * @return array<int, string>|null
+	 * @codeCoverageIgnore
+	 */
+	public function scanDirectory(string $path): ?array
+	{
+		$result = scandir($path);
 
 		return $result === false ? null : $result;
 	}

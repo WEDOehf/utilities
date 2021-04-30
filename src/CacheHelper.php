@@ -12,9 +12,8 @@ class CacheHelper
 	 */
 	public static function generateKey(object $obj, string $methodName = '', array $params = []): string
 	{
-		return 'MethodCache:' . get_class($obj) . ':' . $methodName . self::generateKeyFromParams($params);
+		return 'MethodCache:' . $obj::class . ':' . $methodName . self::generateKeyFromParams($params);
 	}
-
 
 	/**
 	 * @param mixed[] $params

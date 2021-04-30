@@ -19,21 +19,6 @@ class CachedAspectTest extends TestCase
 
 	private Cache $cache;
 
-	protected function setUp(): void
-	{
-		$this->cache = new Cache(new MemoryStorage());
-		$testObj = new TestCache();
-
-		$cacheDir = __DIR__ . '/../../../../../temp/cache';
-		if (!is_dir($cacheDir)) {
-			mkdir($cacheDir, 0777, true);
-		}
-
-		$this->aroundMethod = new AroundMethod($testObj, 'test');
-		$this->aroundMethod->addChainLink($testObj, 'test');
-		$this->aspect = new CachedAspect($this->cache, $cacheDir);
-	}
-
 	public function testMemoryCache(): void
 	{
 		$first = $this->aspect->memoryCache($this->aroundMethod);
@@ -41,7 +26,6 @@ class CachedAspectTest extends TestCase
 		$second = $this->aspect->memoryCache($this->aroundMethod);
 		$this->assertEquals(1, $second);
 	}
-
 
 	public function testCache(): void
 	{
@@ -81,6 +65,21 @@ class CachedAspectTest extends TestCase
 		$this->assertEquals(1, $first);
 		$second = $this->aspect->fileCache($this->aroundMethod);
 		$this->assertEquals(1, $second);
+	}
+
+	protected function setUp(): void
+	{
+		$this->cache = new Cache(new MemoryStorage());
+		$testObj = new TestCache();
+
+		$cacheDir = __DIR__ . '/../../../../../temp/cache';
+		if (!is_dir($cacheDir)) {
+			mkdir($cacheDir, 0777, true);
+		}
+
+		$this->aroundMethod = new AroundMethod($testObj, 'test');
+		$this->aroundMethod->addChainLink($testObj, 'test');
+		$this->aspect = new CachedAspect($this->cache, $cacheDir);
 	}
 
 }

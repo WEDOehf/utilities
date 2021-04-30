@@ -10,6 +10,15 @@ use JsonSerializable;
 class JsonDateTime extends DateTime implements JsonSerializable
 {
 
+	public function __construct(string|DateTimeInterface $time = 'now', ?DateTimeZone $timezone = null)
+	{
+		if ($time instanceof DateTimeInterface) {
+			parent::__construct($time->format('Y-m-d H:i:s'), $timezone ?? $time->getTimezone());
+		} else {
+			parent::__construct($time, $timezone);
+		}
+	}
+
 	/**
 	 * Specify data which should be serialized to JSON
 	 *
@@ -17,22 +26,9 @@ class JsonDateTime extends DateTime implements JsonSerializable
 	 * @return mixed data which can be serialized by <b>json_encode</b>,
 	 * which is a value of any type other than a resource.
 	 */
-	public function jsonSerialize()
+	public function jsonSerialize(): mixed
 	{
 		return $this->format(DateTime::ATOM);
-	}
-
-
-	/**
-	 * @param string|DateTimeInterface $time
-	 */
-	public function __construct($time = 'now', ?DateTimeZone $timezone = null)
-	{
-		if ($time instanceof DateTimeInterface) {
-			parent::__construct($time->format('Y-m-d H:i:s'), $timezone ?? $time->getTimezone());
-		} else {
-			parent::__construct($time, $timezone);
-		}
 	}
 
 	public function isToday(): bool

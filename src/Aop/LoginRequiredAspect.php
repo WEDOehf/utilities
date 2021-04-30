@@ -2,18 +2,15 @@
 
 namespace Wedo\Utilities\Aop;
 
-use Contributte\Aop\Annotations\Before;
+use Contributte\Aop\Attributes\Before;
 use Contributte\Aop\JoinPoint\BeforeMethod;
 use Nette\NotSupportedException;
-use Nette\Reflection\ClassType;
 use Nette\Security\User;
 use Nette\SmartObject;
+use ReflectionClass;
 use Wedo\Utilities\Aop\Exceptions\LoginRequiredException;
 use Wedo\Utilities\Aop\Exceptions\TryAfterLoginException;
 
-/**
- * @SuppressWarnings(PHPMD)
- */
 class LoginRequiredAspect
 {
 
@@ -29,10 +26,11 @@ class LoginRequiredAspect
 
 	/**
 	 * phpcs:ignore
-	 * @Before("class(Wedo\Utilities\Aop\Markers\ILoginRequired) && methodAnnotatedWith(Wedo\Utilities\Aop\Annotations\LoginRequired)")
 	 * @throws LoginRequiredException
 	 * @throws NotSupportedException
 	 */
+	#[Before('class(Wedo\Utilities\Aop\Markers\ILoginRequired) && methodAttributedWith(Wedo\Utilities\Aop\Annotations\LoginRequired)')]
+
 	public function loginRequired(BeforeMethod $method): void
 	{
 		if ($method->getTargetReflection()->isConstructor()) {
@@ -47,9 +45,10 @@ class LoginRequiredAspect
 
 	/**
 	 * phpcs:ignore
-	 * @Before("class(Wedo\Utilities\Aop\Markers\ITryAfterLogin) && methodAnnotatedWith(Wedo\Utilities\Aop\Annotations\TryAfterLogin)")
 	 * @throws NotSupportedException
 	 */
+	#[Before('class(Wedo\Utilities\Aop\Markers\ITryAfterLogin) && methodAttributedWith(Wedo\Utilities\Aop\Annotations\TryAfterLogin)')]
+
 	public function tryAfterLogin(BeforeMethod $method): void
 	{
 		$reflection = $method->getTargetReflection();
@@ -63,8 +62,8 @@ class LoginRequiredAspect
 			$reflection = $method->getTargetReflection();
 			$ex = new TryAfterLoginException();
 
-			/** @var ClassType $presenterClass */
-			$presenterClass = $class->getParentClass() ?? $class;
+			/** @var ReflectionClass<object> $presenterClass */
+			$presenterClass = $class->getParentClass() === false ? $class : $class->getParentClass();
 			$ex->presenter = $presenterClass->getName();
 			$ex->action = $reflection->getName();
 			$ex->parameters = $method->getArguments();

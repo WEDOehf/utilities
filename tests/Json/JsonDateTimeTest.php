@@ -14,20 +14,17 @@ class JsonDateTimeTest extends TestCase
 		$this->assertTrue($jsonDateTime->isToday());
 	}
 
-
 	public function testIsToday_ShouldReturnFalse(): void
 	{
 		$jsonDateTime = new JsonDateTime('today - 2 day');
 		$this->assertFalse($jsonDateTime->isToday());
 	}
 
-
 	public function testIsTomorrow_ShouldReturnTrue(): void
 	{
 		$jsonDateTime = new JsonDateTime('tomorrow');
 		$this->assertTrue($jsonDateTime->isTomorrow());
 	}
-
 
 	public function testIsTomorrow_ShouldReturnFalse(): void
 	{

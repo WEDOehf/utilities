@@ -31,11 +31,9 @@ class Translator implements ITranslator
 	/**
 	 * Translates the given string.
 	 *
-	 * @param mixed $key
-	 * @param mixed $parameters
 	 * @throws InvalidArgumentException
 	 */
-	public function translate($key, ...$parameters): string
+	public function translate(mixed $key, mixed ...$parameters): string
 	{
 		if (!isset($this->module) || !isset($this->language)) {
 			throw new InvalidArgumentException('Language and/or module not set!');
@@ -61,42 +59,40 @@ class Translator implements ITranslator
 		return $message;
 	}
 
-
 	public function getModule(): string
 	{
 		return $this->module;
 	}
-
 
 	public function setModule(string $module): void
 	{
 		$this->module = $module;
 	}
 
-
 	public function getLanguage(): string
 	{
 		return $this->language;
 	}
-
 
 	public function setLanguage(string $language): void
 	{
 		$this->language = $language;
 	}
 
-
 	public function isInsertMissing(): bool
 	{
 		return $this->insertMissing;
 	}
-
 
 	public function setInsertMissing(bool $insertMissing = true): void
 	{
 		$this->insertMissing = $insertMissing;
 	}
 
+	public function getLanguageKey(): string
+	{
+		return $this->getLanguage() . '-' . $this->getModule();
+	}
 
 	/**
 	 * int|array
@@ -121,7 +117,6 @@ class Translator implements ITranslator
 		return $message;
 	}
 
-
 	private function insertMissingKey(string $key): void
 	{
 		if ($this->isInsertMissing() && (!array_key_exists($key, $this->translations[$this->getLanguageKey()]))) {
@@ -131,7 +126,6 @@ class Translator implements ITranslator
 			$this->logger->info('adding new key', ['key' => $key, 'trace' => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 20)]);
 		}
 	}
-
 
 	/**
 	 * Fills translation field
@@ -143,7 +137,6 @@ class Translator implements ITranslator
 		}
 	}
 
-
 	private function getMessage(string $key): string
 	{
 		$lowerKey = strtolower($key);
@@ -154,12 +147,6 @@ class Translator implements ITranslator
 		$this->insertMissingKey($lowerKey);
 
 		return $key;
-	}
-
-
-	public function getLanguageKey(): string
-	{
-		return $this->getLanguage() . '-' . $this->getModule();
 	}
 
 }

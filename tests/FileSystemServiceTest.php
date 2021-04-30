@@ -30,14 +30,12 @@ class FileSystemServiceTest extends TestCase
 		$this->root->addChild(new vfsStreamDirectory('directory'));
 	}
 
-
 	public function testExists(): void
 	{
 		$fs = new FileSystemService();
 		$this->assertFalse($fs->exists(vfsStream::url('root/bogusfile')));
 		$this->assertTrue($fs->exists(vfsStream::url('root/file')));
 	}
-
 
 	public function testIsFile(): void
 	{
@@ -47,7 +45,6 @@ class FileSystemServiceTest extends TestCase
 		$this->assertTrue($fs->isFile(vfsStream::url('root/file')));
 	}
 
-
 	public function testIsDirectory(): void
 	{
 		$fs = new FileSystemService();
@@ -56,7 +53,6 @@ class FileSystemServiceTest extends TestCase
 		$this->assertTrue($fs->isDirectory(vfsStream::url('root/directory')));
 	}
 
-
 	public function testIsWritable(): void
 	{
 		$fs = new FileSystemService();
@@ -64,14 +60,12 @@ class FileSystemServiceTest extends TestCase
 		$this->assertTrue($fs->isWritable(vfsStream::url('root/writablefile')));
 	}
 
-
 	public function testIsReadable(): void
 	{
 		$fs = new FileSystemService();
 		$this->assertFalse($fs->isReadable(vfsStream::url('root/protectedfile')));
 		$this->assertTrue($fs->isReadable(vfsStream::url('root/readablefile')));
 	}
-
 
 	public function testRemove(): void
 	{
@@ -81,7 +75,6 @@ class FileSystemServiceTest extends TestCase
 		$this->assertFalse($this->root->hasChild('tempremovefile'));
 	}
 
-
 	public function testWrite(): void
 	{
 		$fs = new FileSystemService();
@@ -90,13 +83,11 @@ class FileSystemServiceTest extends TestCase
 		$this->assertTrue($this->root->hasChild('tempwritefile'));
 	}
 
-
 	public function testRead(): void
 	{
 		$fs = new FileSystemService();
 		$this->assertEquals('file contents', $fs->read(vfsStream::url('root/file')));
 	}
-
 
 	public function testMakeDirectory(): void
 	{
@@ -105,13 +96,20 @@ class FileSystemServiceTest extends TestCase
 		$this->assertTrue($this->root->hasChild('tempmakedirectory/tempsubdirectory'));
 	}
 
-
 	public function testRemoveDirectory(): void
 	{
 		$fs = new FileSystemService();
 		$this->root->addChild(new vfsStreamDirectory('tempremovedirectory'));
 		$fs->removeDirectory(vfsStream::url('root/tempremovedirectory'));
 		$this->assertFalse($this->root->hasChild('tempremovedirectory'));
+	}
+
+	public function testGetFilesize(): void
+	{
+		$fs = new FileSystemService();
+		$fs = $fs->getFilesize(__DIR__ . '/../LICENSE');
+
+		$this->assertEquals(1066, $fs);
 	}
 
 }
