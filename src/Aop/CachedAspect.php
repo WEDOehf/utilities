@@ -30,7 +30,7 @@ class CachedAspect
 	}
 
 
-	#[Around('class(Wedo\Utilities\Aop\Markers\ICached) && methodAttributedWith(Wedo\Utilities\Aop\Annotations\Cached)')]
+	#[Around('class(Wedo\Utilities\Aop\Markers\ICached) && methodAttributedWith(Wedo\Utilities\Aop\Attributes\Cached)')]
 
 	public function cache(AroundMethod $method): mixed
 	{
@@ -50,7 +50,7 @@ class CachedAspect
 		return $result;
 	}
 
-	#[Around('class(Wedo\Utilities\Aop\Markers\ICached) && methodAttributedWith(Wedo\Utilities\Aop\Annotations\MemoryCached)')]
+	#[Around('class(Wedo\Utilities\Aop\Markers\ICached) && methodAttributedWith(Wedo\Utilities\Aop\Attributes\MemoryCached)')]
 
 	public function memoryCache(AroundMethod $method): mixed
 	{

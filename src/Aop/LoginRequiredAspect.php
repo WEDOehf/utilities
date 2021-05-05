@@ -29,12 +29,12 @@ class LoginRequiredAspect
 	 * @throws LoginRequiredException
 	 * @throws NotSupportedException
 	 */
-	#[Before('class(Wedo\Utilities\Aop\Markers\ILoginRequired) && methodAttributedWith(Wedo\Utilities\Aop\Annotations\LoginRequired)')]
+	#[Before('class(Wedo\Utilities\Aop\Markers\ILoginRequired) && methodAttributedWith(Wedo\Utilities\Aop\Attributes\LoginRequired)')]
 
 	public function loginRequired(BeforeMethod $method): void
 	{
 		if ($method->getTargetReflection()->isConstructor()) {
-			throw new NotSupportedException('LoginRequired annotation cannot be used on __construct()!');
+			throw new NotSupportedException('LoginRequired atributte cannot be used on __construct()!');
 		}
 
 		if (!$this->user->isLoggedIn()) {
@@ -47,7 +47,7 @@ class LoginRequiredAspect
 	 * phpcs:ignore
 	 * @throws NotSupportedException
 	 */
-	#[Before('class(Wedo\Utilities\Aop\Markers\ITryAfterLogin) && methodAttributedWith(Wedo\Utilities\Aop\Annotations\TryAfterLogin)')]
+	#[Before('class(Wedo\Utilities\Aop\Markers\ITryAfterLogin) && methodAttributedWith(Wedo\Utilities\Aop\Attributes\TryAfterLogin)')]
 
 	public function tryAfterLogin(BeforeMethod $method): void
 	{
@@ -55,7 +55,7 @@ class LoginRequiredAspect
 		$class = $reflection->getDeclaringClass();
 
 		if ($reflection->isConstructor()) {
-			throw new NotSupportedException('TryAfterLogin annotation cannot be used on __construct() or on non-api methods!');
+			throw new NotSupportedException('TryAfterLogin attribute cannot be used on __construct() or on non-api methods!');
 		}
 
 		if (!$this->user->isLoggedIn()) {
