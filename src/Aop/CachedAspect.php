@@ -9,6 +9,7 @@ use Nette\Caching\Storages\FileStorage;
 use Nette\SmartObject;
 use Wedo\Utilities\Aop\Attributes\Cached;
 use Wedo\Utilities\Aop\Attributes\FileCached;
+use Wedo\Utilities\Aop\Attributes\MemoryCached;
 use Wedo\Utilities\CacheHelper;
 
 class CachedAspect
@@ -34,7 +35,7 @@ class CachedAspect
 
 	public function cache(AroundMethod $method): mixed
 	{
-		$cache_key = $this->getKey($method);
+		$cache_key = $this->getKey($method, Cached::class);
 
 		$result = $this->cache->load($cache_key);
 
@@ -54,7 +55,7 @@ class CachedAspect
 
 	public function memoryCache(AroundMethod $method): mixed
 	{
-		$cache_key = $this->getKey($method);
+		$cache_key = $this->getKey($method, MemoryCached::class);
 
 		if (isset($this->mCache[$cache_key])) {
 			return $this->mCache[$cache_key];
@@ -69,7 +70,7 @@ class CachedAspect
 
 	public function fileCache(AroundMethod $method): mixed
 	{
-		$cache_key = $this->getKey($method);
+		$cache_key = $this->getKey($method, FileCached::class);
 		$result = $this->fileStorage->load($cache_key);
 
 		if ($result === null) {
@@ -88,17 +89,31 @@ class CachedAspect
 		return $result;
 	}
 
-	protected function getKey(AroundMethod $method): string
+	/**
+	 * @param class-string $className
+	 */
+	protected function getKey(AroundMethod $method, string $className): string
 	{
-		/** @var Cached $attribute */
-		$attribute = $method->getTargetReflection()->getAttributes(Cached::class)[0]->newInstance();
+		$attributes = $method->getTargetReflection()->getAttributes($className);
 
-		if ($attribute->key !== null) {
+		if ($attributes === []) {
+			return $this->generateDefaultKey($method);
+		}
+
+		/** @var Cached|MemoryCached|FileCached $attribute */
+		$attribute = $attributes[0]->newInstance();
+
+		if (isset($attribute->key) && $attribute->key !== null) {
 			$key = $attribute->key;
 
 			return $key . CacheHelper::generateKeyFromParams($method->getArguments());
 		}
 
+		return $this->generateDefaultKey($method);
+	}
+
+	private function generateDefaultKey(AroundMethod $method): string
+	{
 		return CacheHelper::generateKey(
 			$method->getTargetObject(),
 			$method->getTargetReflection()->getName(),
