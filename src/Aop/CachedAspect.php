@@ -66,7 +66,7 @@ class CachedAspect
 		return $this->mCache[$cache_key];
 	}
 
-	#[Around('class(App\Utilities\Aop\Markers\ICached) && methodAttributedWith(Wedo\Utilities\Aop\Attributes\FileCached)')]
+	#[Around('class(Wedo\Utilities\Aop\Markers\ICached) && methodAttributedWith(Wedo\Utilities\Aop\Attributes\FileCached)')]
 
 	public function fileCache(AroundMethod $method): mixed
 	{
