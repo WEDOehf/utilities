@@ -130,7 +130,7 @@ class JsonObject
 		return [];
 	}
 
-	protected static function rowCallback(object $entity, object $row): void
+	protected static function rowCallback(self $entity, object $row): void
 	{
 		//nothing to handle
 	}
