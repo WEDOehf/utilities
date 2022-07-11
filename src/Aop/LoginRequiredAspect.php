@@ -30,7 +30,6 @@ class LoginRequiredAspect
 	 * @throws NotSupportedException
 	 */
 	#[Before('class(Wedo\Utilities\Aop\Markers\ILoginRequired) && methodAttributedWith(Wedo\Utilities\Aop\Attributes\LoginRequired)')]
-
 	public function loginRequired(BeforeMethod $method): void
 	{
 		if ($method->getTargetReflection()->isConstructor()) {
@@ -48,7 +47,6 @@ class LoginRequiredAspect
 	 * @throws NotSupportedException
 	 */
 	#[Before('class(Wedo\Utilities\Aop\Markers\ITryAfterLogin) && methodAttributedWith(Wedo\Utilities\Aop\Attributes\TryAfterLogin)')]
-
 	public function tryAfterLogin(BeforeMethod $method): void
 	{
 		$reflection = $method->getTargetReflection();

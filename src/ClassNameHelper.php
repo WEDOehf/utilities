@@ -21,11 +21,13 @@ class ClassNameHelper
 
 		$reflectionClass = new ReflectionClass($object);
 		$classInSameNamespace = $reflectionClass->getNamespaceName() . '\\' . $shortClassName;
+
 		if (class_exists($classInSameNamespace)) {
 			return $classInSameNamespace;
 		}
 
 		$uses = Reflection::getUseStatements($reflectionClass);
+
 		foreach ($uses as $use) {
 			if ($shortClassName === self::getShortClassName($use)) {
 				return $use;

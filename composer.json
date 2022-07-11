@@ -11,13 +11,13 @@
   },
   "require-dev": {
     "phpunit/phpunit": "^9.0",
-    "phpstan/phpstan": "^0.12",
+    "phpstan/phpstan": "^1.0",
     "dg/bypass-finals": "^1.2",
     "contributte/qa": "^0.1",
-    "phpstan/phpstan-deprecation-rules": "^0.12",
-    "phpstan/phpstan-dibi": "^0.12",
-    "phpstan/phpstan-nette": "^0.12",
-    "phpstan/phpstan-strict-rules": "^0.12",
+    "phpstan/phpstan-deprecation-rules": "^1.0",
+    "phpstan/phpstan-dibi": "^1.0",
+    "phpstan/phpstan-nette": "^1.0",
+    "phpstan/phpstan-strict-rules": "^1.0",
     "psr/log": "^1.1",
     "mikey179/vfsstream": "^1.6"
   },
@@ -37,5 +37,10 @@
     }
   },
   "prefer-stable": true,
-  "minimum-stability": "dev"
+  "minimum-stability": "dev",
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
 }

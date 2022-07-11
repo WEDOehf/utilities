@@ -73,6 +73,7 @@ class CachedAspectTest extends TestCase
 		$testObj = new TestCache();
 
 		$cacheDir = __DIR__ . '/../../../../../temp/cache';
+
 		if (!is_dir($cacheDir)) {
 			mkdir($cacheDir, 0777, true);
 		}
