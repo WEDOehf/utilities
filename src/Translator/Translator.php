@@ -39,7 +39,7 @@ class Translator implements ITranslator
 			throw new InvalidArgumentException('Language and/or module not set!');
 		}
 
-		$key = (string) $key;
+		$key = (string) $key; //@phpstan-ignore-line
 
 		if ($key === '') {
 			return '';
@@ -121,7 +121,7 @@ class Translator implements ITranslator
 	{
 		if ($this->isInsertMissing() && (!array_key_exists($key, $this->translations[$this->getLanguageKey()]))) {
 			$this->repository->addKey($this->module, $this->language, $key);
-			$this->translations[$this->getLanguageKey()][$key] = null;
+			$this->translations[$this->getLanguageKey()][$key] = null; //@phpstan-ignore-line
 
 			$this->logger->info('adding new key', ['key' => $key, 'trace' => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 20)]);
 		}
@@ -140,6 +140,7 @@ class Translator implements ITranslator
 	private function getMessage(string $key): string
 	{
 		$lowerKey = strtolower($key);
+
 		if (isset($this->translations[$this->getLanguageKey()][$lowerKey])) {
 			return $this->translations[$this->getLanguageKey()][$lowerKey];
 		}

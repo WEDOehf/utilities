@@ -80,7 +80,7 @@ jobs:
     runs-on: "${{ matrix.operating-system }}"
     strategy:
       matrix:
-        php-version: ["8.0"]
+        php-version: ["8.1"]
         operating-system: ["ubuntu-latest"]
         composer-args: [ "" ]
         include:
@@ -144,7 +144,7 @@ jobs:
 
     strategy:
       matrix:
-        php-version: ["8.0"]
+        php-version: ["8.1"]
         operating-system: ["ubuntu-latest"]
       fail-fast: false
 
@@ -200,7 +200,7 @@ jobs:
 
     strategy:
       matrix:
-        php-version: ["8.0"]
+        php-version: ["8.1"]
         operating-system: ["ubuntu-latest"]
       fail-fast: false
 

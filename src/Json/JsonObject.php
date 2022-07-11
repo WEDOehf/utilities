@@ -17,6 +17,7 @@ class JsonObject
 			return null;
 		}
 
+		/** @var array<int|string, mixed>|null $arr */
 		$arr = json_decode($json, true);
 
 		if ($arr === null) {

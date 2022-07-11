@@ -29,7 +29,10 @@ class JsonTranslatableMessage implements JsonSerializable
 		/** @var mixed[] $params */
 		$params = array_merge([$this->key], $this->params);
 
-		return call_user_func_array([$this->translator, 'translate'], $params);
+		/** @var string $result */
+		$result = call_user_func_array([$this->translator, 'translate'], $params);
+
+		return $result;
 	}
 
 	public function setTranslator(ITranslator $translator): void
