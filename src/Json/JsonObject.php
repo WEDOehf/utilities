@@ -27,6 +27,25 @@ class JsonObject
 		return self::fromArray($arr, $firstLoweCase);
 	}
 
+	public static function arrayFromJson(string $json, bool $firstLoweCase = false): ?array
+	{
+
+		/** @var array<int|string, mixed>|null $arr */
+		$arr = json_decode($json, true);
+
+		if ($arr === null) {
+			return null;
+		}
+
+		$result = [];
+
+		foreach($arr as $row) {
+			$result[] = self::fromArray($row, $firstLoweCase);
+		}
+
+		return $result;
+	}
+
 	/**
 	 * Gets object from array, fills up only defined properties in class
 	 *
