@@ -11,7 +11,7 @@ class JsonObject
 	/**
 	 * @return static
 	 */
-	public static function fromJson(?string $json = null, bool $firstLoweCase = false): ?self
+	public static function fromJson(?string $json = null, bool $firstLowerCase = false): ?self
 	{
 		if ($json === null) {
 			return null;
@@ -24,10 +24,10 @@ class JsonObject
 			return null;
 		}
 
-		return self::fromArray($arr, $firstLoweCase);
+		return self::fromArray($arr, $firstLowerCase);
 	}
 
-	public static function arrayFromJson(string $json, bool $firstLoweCase = false): ?array
+	public static function arrayFromJson(string $json,?string $subproperty = null, bool $firstLowerCase = false): ?array
 	{
 
 		/** @var array<int|string, mixed>|null $arr */
@@ -37,10 +37,14 @@ class JsonObject
 			return null;
 		}
 
+		if ($subproperty !== null) {
+			$arr = $arr[$subproperty];
+		}
+
 		$result = [];
 
-		foreach($arr as $row) {
-			$result[] = self::fromArray($row, $firstLoweCase);
+		foreach ($arr as $row) {
+			$result[] = self::fromArray($row, $firstLowerCase);
 		}
 
 		return $result;

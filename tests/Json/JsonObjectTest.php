@@ -26,9 +26,9 @@ class JsonObjectTest extends TestCase
 	public function testFromArrayToJson(): void
 	{
 		$this->assertNull(TestJson::fromJson(null));
-		$json = '[{"id":"15","name":"test","Created_date":null,"ignored":null},{"id":"16","name":"test2","Created_date":null,"ignored":null}]';
+		$json = '{"tests": [{"id":"15","name":"test","Created_date":null,"ignored":null},{"id":"16","name":"test2","Created_date":null,"ignored":null}]}';
 		/** @var TestJson[] $testJson */
-		$testJson = TestJson::arrayFromJson($json, true);
+		$testJson = TestJson::arrayFromJson($json, 'tests', true);
 		$this->assertIsArray($testJson);
 		$this->assertEquals(15, $testJson[0]->id);
 		$this->assertEquals('test2', $testJson[1]->name);
