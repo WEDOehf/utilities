@@ -3,7 +3,7 @@
   "description": "Utility classes",
   "license": ["MIT"],
   "require": {
-    "php": "^8.0",
+    "php": "^8.1",
     "nette/utils": "^3.0",
     "nette/caching": "^3.0",
     "contributte/aop":"^3.0",

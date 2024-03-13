@@ -27,29 +27,6 @@ class JsonObject
 		return self::fromArray($arr, $firstLowerCase);
 	}
 
-	public static function arrayFromJson(string $json,?string $subproperty = null, bool $firstLowerCase = false): ?array
-	{
-
-		/** @var array<int|string, mixed>|null $arr */
-		$arr = json_decode($json, true);
-
-		if ($arr === null) {
-			return null;
-		}
-
-		if ($subproperty !== null) {
-			$arr = $arr[$subproperty];
-		}
-
-		$result = [];
-
-		foreach ($arr as $row) {
-			$result[] = self::fromArray($row, $firstLowerCase);
-		}
-
-		return $result;
-	}
-
 	/**
 	 * Gets object from array, fills up only defined properties in class
 	 *
@@ -116,6 +93,31 @@ class JsonObject
 	public function toJson(): string
 	{
 		return Json::encode($this);
+	}
+
+	/**
+	 * @return array<int, mixed>|null
+	 */
+	public static function arrayFromJson(string $json, ?string $subproperty = null, bool $firstLowerCase = false): ?array
+	{
+		/** @var array<int|string, array<mixed>>|null $arr */
+		$arr = json_decode($json, true);
+
+		if ($arr === null) {
+			return null;
+		}
+
+		if ($subproperty !== null) {
+			$arr = $arr[$subproperty];
+		}
+
+		$result = [];
+
+		foreach ($arr as $row) {
+			$result[] = self::fromArray($row, $firstLowerCase); //@phpstan-ignore-line
+		}
+
+		return $result;
 	}
 
 	/**
