@@ -3,7 +3,7 @@
 namespace Wedo\Utilities\Json;
 
 use JsonSerializable;
-use Nette\Localization\ITranslator;
+use Nette\Localization\Translator;
 
 class JsonTranslatableMessage implements JsonSerializable
 {
@@ -13,7 +13,7 @@ class JsonTranslatableMessage implements JsonSerializable
 	/** @var mixed[] */
 	public array $params = [];
 
-	private ITranslator $translator;
+	private Translator $translator;
 
 	/**
 	 * @param mixed[] $params
@@ -35,7 +35,7 @@ class JsonTranslatableMessage implements JsonSerializable
 		return $result;
 	}
 
-	public function setTranslator(ITranslator $translator): void
+	public function setTranslator(Translator $translator): void
 	{
 		$this->translator = $translator;
 	}

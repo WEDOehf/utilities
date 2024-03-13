@@ -3,10 +3,9 @@
 namespace Wedo\Utilities\Translator;
 
 use InvalidArgumentException;
-use Nette\Localization\ITranslator;
 use Psr\Log\LoggerInterface;
 
-class Translator implements ITranslator
+class Translator implements \Nette\Localization\Translator
 {
 
 	private ITranslatorRepository $repository;
