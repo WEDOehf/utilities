@@ -88,14 +88,6 @@ class JsonObject
 	}
 
 	/**
-	 * returns object serialized to JSON
-	 */
-	public function toJson(): string
-	{
-		return Json::encode($this);
-	}
-
-	/**
 	 * @return array<int, mixed>|null
 	 */
 	public static function arrayFromJson(string $json, ?string $subproperty = null, bool $firstLowerCase = false): ?array
@@ -145,6 +137,14 @@ class JsonObject
 		}
 
 		return $result;
+	}
+
+	/**
+	 * returns object serialized to JSON
+	 */
+	public function toJson(): string
+	{
+		return Json::encode($this);
 	}
 
 	/**
