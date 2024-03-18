@@ -1,4 +1,6 @@
 <?php declare(strict_types = 1);
 
+use DG\BypassFinals;
+
 require __DIR__ . '/../vendor/autoload.php';
-DG\BypassFinals::enable();
+BypassFinals::enable();
